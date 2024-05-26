@@ -1,6 +1,7 @@
 import React, {useDebugValue, useEffect, useState} from 'react';
 import appwriteService from "../appwrite/conf";
-import { Container, PostCard } from "../components";
+import { Button, Container, PostCard } from "../components";
+import { Link } from 'react-router-dom';
 
 
 function Home() {
@@ -16,13 +17,21 @@ function Home() {
     
     if (posts.length === 0) {
         return (
-            <div className="w-full  py-8  text-center">
+            <div className="w-ful flex justify-center items-center">
                 <Container>
-                    <div className="flex flex-wrap">
-                        <div className="p-2 w-full">
-                            <h1 className="text-2xl font-bold hover:text-blue-500">
-                                Login to read posts
+                    <div className="flex h-screen  pt-60 flex-wrap justify-center">
+                        <div className=" w-full">
+                            <h1 className="font-bold hover:text-blue-500 text-center text-6xl">
+                             Welcome to <span style={{ color: 'lightseagreen' }}>ProsePond!</span>
                             </h1>
+                            <p className=" text-3xl text-center text-gray-500">-Where prose finds its tranquil home.</p>
+                            <div className="w-full text-center mt-14">
+                                <Link to='/login'>
+                                    <Button>
+                                        Get Started
+                                    </Button>
+                                </Link>
+                            </div>
                         </div>
                     </div>
                 </Container>

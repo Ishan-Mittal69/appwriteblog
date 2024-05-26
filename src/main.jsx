@@ -35,19 +35,19 @@ const router = createBrowserRouter(
     )}  />
 
     <Route path='/all-posts' element={(
-      <Protected authentication={" "}>
+      <Protected >
         <AllPosts/>
       </Protected>
     )}  />
     
     <Route path='/add-post' element={(
-      <Protected authentication={" "}>
+      <Protected >
         <AddPost/>
       </Protected>
     )}  />
 
     <Route path='/edit-post/:slug' element={(
-      <Protected authentication={" "}>
+      <Protected  >
         <EditPost/>
       </Protected>
     )}  />

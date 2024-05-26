@@ -5,7 +5,7 @@ import appwriteService from "../appwrite/conf";
 
 function EditPost() {
     const [post, setPosts] =useState(null)
-    const {slug} =useParams()
+    const {slug} = useParams()
     const navigate = useNavigate()
 
     useEffect(()=>{

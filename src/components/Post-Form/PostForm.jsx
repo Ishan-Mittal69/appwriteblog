@@ -20,14 +20,13 @@ export default function PostForm({ post }) {
 
     const submit = async (data) => {
         if (post) {
-            const file = data.image[0] ? await appwriteService.uploadFile(data.image[0]) : null;
+            const file = data.image[0] ? await appwriteService.uploadFile(data.image[0]) : null
 
             if (file) {
-                appwriteService.deleteFile(post.featuredImage);
+               await appwriteService.deleteFile(post.featuredImage);
             }
 
-            const dbPost = await appwriteService.updatePost(post.$id, {
-                ...data,
+            const dbPost = await appwriteService.updatePost(post.$id, { ...data,
                 featuredImage: file ? file.$id : undefined,
             });
 
@@ -40,7 +39,7 @@ export default function PostForm({ post }) {
             if (file) {
                 const fileId = file.$id;
                 data.featuredImage = fileId;
-                const dbPost = await appwriteService.createPost({ ...data, userId: userData.$id });
+                const dbPost = await appwriteService.createPost({ ...data, userId: userData.$id});
 
                 if (dbPost) {
                     navigate(`/post/${dbPost.$id}`);
@@ -96,7 +95,7 @@ export default function PostForm({ post }) {
                     type="file"
                     className="mb-4"
                     accept="image/png, image/jpg, image/jpeg, image/gif"
-                    {...register("image", { required: !post })}
+                    {...register('image' , { required: !post })}
                 />
                 {post && (
                     <div className="w-full mb-4">
@@ -113,7 +112,7 @@ export default function PostForm({ post }) {
                     className="mb-4"
                     {...register("status", { required: true })}
                 />
-                <Button type="submit" bgColor={post ? "bg-green-500" : undefined} className="w-full">
+                <Button type="submit" bgcolor={post ? "bg-green-500" : undefined} className="w-full">
                     {post ? "Update" : "Submit"}
                 </Button>
             </div>

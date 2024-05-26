@@ -24,10 +24,10 @@ function App() {
   },[])
 
   return !loading ? (
-    <div className="min-h-screen flex flex-wrap content-between bg-gray-500">
+    <div className="min-h-screen flex flex-wrap content-between bg-slate-200">
       <div className="w-full block">
         <Header/>
-        <main className="bg-slate-400" style={{ height: '88%' }}> 
+        <main className="bg-slate-50 h-4/5"> 
           <Outlet/>
         </main>
         <Footer/>
