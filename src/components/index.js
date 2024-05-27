@@ -12,7 +12,10 @@ import Login from "./Login";
 import PostForm from "./Post-Form/PostForm";
 import PostCard from "./PostCard";
 import Protected  from "./AuthLayout";
+import Loader from "./loaders/Loader";
+import SkeletonLoader from "./loaders/SkeletonLoader";
+
 
 export {
-    Header, Footer, Container, Logo, LogoutBtn, Button, Select, Input, RTE, Signup, Login, PostForm , PostCard, Protected
+    Header, Footer, Container, Logo, LogoutBtn, Button, Select, Input, RTE, Signup, Login, PostForm , PostCard, Protected, Loader, SkeletonLoader
 }

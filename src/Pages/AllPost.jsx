@@ -1,29 +1,42 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import appwriteService from "../appwrite/conf";
-import { Container, PostCard } from "../components/index";
+import { Container, PostCard, SkeletonLoader } from "../components/index";
 
 function AllPost() {
-    const [posts, setPosts] = useState([])    
-    useEffect(()=>{appwriteService.getPosts([]).then((posts)=>{
-        if(posts){
-            setPosts(posts.documents)
-        }
-    })}, [])
-    
+    const [posts, setPosts] = useState([]);
+    const [loading, setLoading] = useState(true); // State variable for loading state
 
-    return ( 
+    useEffect(() => {
+        appwriteService.getPosts([]).then((posts) => {
+            if (posts) {
+                setPosts(posts.documents);
+                setLoading(false); // Set loading state to false when data is fetched
+            }
+        });
+    }, []);
+
+    return (
         <div className='w-full py-8'>
             <Container>
                 <div className='flex flex-wrap'>
-                    {posts.map((post)=>(
-                        <div key={post.$id} className='p-2 w-1/4'>
-                            <PostCard {...post}/>
-                        </div>
-                    ))}
+                    {/* Display skeleton loader while loading is true */}
+                    {loading ? (
+                        Array.from({ length: 8 }).map((_, index) => (
+                            <SkeletonLoader key={index} />
+                        ))
+                        
+                    ) : (
+                        // Display posts when loading is false
+                        posts.map((post) => (
+                            <div key={post.$id} className='p-2 w-1/4'>
+                                <PostCard {...post} />
+                            </div>
+                        ))
+                    )}
                 </div>
             </Container>
         </div>
-     );
+    );
 }
 
 export default AllPost;

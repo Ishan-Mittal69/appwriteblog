@@ -3,6 +3,7 @@ import { Container , Logo, LogoutBtn } from "../index";
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import ThemeBtn from '../ThemeBtn';
 
 function Header() {
 
@@ -38,7 +39,7 @@ function Header() {
     ]
 
     return (
-        <header className="py-3 shadow bg-zinc-100">
+        <header className="py-3 shadow bg-zinc-100 dark:bg-stone-900">
             <Container>
                 <nav className="flex">
                     <div className="mr-4">
@@ -47,21 +48,24 @@ function Header() {
                         </Link>
                     </div>
 
-                    <ul className="flex ml-auto mt-3">
+                    <ul className="flex ml-auto mt-3 flex-wrap">
                         {navItems.map((item)=>
                             item.active ?(
                                 <li key={item.name}>
-                                    <button onClick={()=>navigate(item.slug)} className="inline-block px-6 py-2 duration-200 hover:bg-blue-100 rounded-full">
+                                    <button onClick={()=>navigate(item.slug)} className="inline-block px-6 py-2 duration-200 hover:bg-blue-100 dark:text-white rounded-full">
                                         {item.name}
                                     </button>
                                 </li>
                             ): null
                         )}
                         {authStatus && (
-                            <li>
+                            <li >
                                 <LogoutBtn/>
                             </li>
                         )}
+                            <li className="mt-2 ml-10">
+                                <ThemeBtn/>
+                            </li>
                     </ul>
                     
                 </nav>
@@ -105,4 +109,5 @@ export default Header;
 //   )
 // }
 
+// export default Header
 // export default Header

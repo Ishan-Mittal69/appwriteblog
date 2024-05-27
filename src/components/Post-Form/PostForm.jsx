@@ -1,6 +1,6 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Button, Input, RTE, Select } from "../index";
+import { Button, Input, Loader, RTE, Select } from "../index";
 import appwriteService from "../../appwrite/conf";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -15,10 +15,13 @@ export default function PostForm({ post }) {
         },
     });
 
+    const [loading, setLoading] = useState(false); // State variable for loading state
+
     const navigate = useNavigate();
     const userData = useSelector((state) => state.auth.userData);
 
     const submit = async (data) => {
+        setLoading(true); 
         if (post) {
             const file = data.image[0] ? await appwriteService.uploadFile(data.image[0]) : null
 
@@ -46,6 +49,7 @@ export default function PostForm({ post }) {
                 }
             }
         }
+        setLoading(false)
     };
 
     const slugTransform = useCallback((value) => {
@@ -71,7 +75,7 @@ export default function PostForm({ post }) {
 
     return (
         <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
-            <div className="w-2/3 px-2">
+            <div className="w-2/3 px-2 dark:text-white">
                 <Input
                     label="Title :"
                     placeholder="Title"
@@ -89,7 +93,7 @@ export default function PostForm({ post }) {
                 />
                 <RTE label="Content :" name="content" control={control} defaultValue={getValues("content")} />
             </div>
-            <div className="w-1/3 px-2">
+            <div className="w-1/3 px-2 dark:text-white">
                 <Input
                     label="Featured Image :"
                     type="file"
@@ -98,7 +102,7 @@ export default function PostForm({ post }) {
                     {...register('image' , { required: !post })}
                 />
                 {post && (
-                    <div className="w-full mb-4">
+                    <div className="w-full mb-4 dark:text-white">
                         <img
                             src={appwriteService.getFilePreview(post.featuredImage)}
                             alt={post.title}
@@ -112,8 +116,10 @@ export default function PostForm({ post }) {
                     className="mb-4"
                     {...register("status", { required: true })}
                 />
-                <Button type="submit" bgcolor={post ? "bg-green-500" : undefined} className="w-full">
-                    {post ? "Update" : "Submit"}
+                <Button type="submit" bgcolor={post ? "bg-green-500" : undefined} className="w-full" disabeled={loading}>
+                    {
+                        loading ? <Loader/>  : post ? "Update" : "Submit"
+                    }
                 </Button>
             </div>
         </form>
