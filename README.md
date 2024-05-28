@@ -2,7 +2,7 @@
 ProsePond is a dynamic web application crafted for users to articulate their thoughts and ideas through published articles. It seamlessly incorporates user authentication, a robust rich text editor, and Appwrite as the backend, ensuring a smooth and secure experience for writers and readers.
 
 ## 🚀 Deployment
-BlogHub is accessible on Link [Visit website](
+ProsePond is accessible on Link [Visit website](
 https://appwriteblog-chi.vercel.app/ "ProsePond"), providing a convenient platform for users to experience the application.
 
 ## 🚀 Features
@@ -17,15 +17,15 @@ https://appwriteblog-chi.vercel.app/ "ProsePond"), providing a convenient platfo
 - Appwrite (Backend): An end-to-end backend server that simplifies backend tasks, ensuring secure user authentication and data storage.
 
 ## 📦 Dependencies
-- "@reduxjs/toolkit": "^2.0.1"
-- "@tinymce/tinymce-react": "^4.3.2"
-- "appwrite": "^13.0.1"
-- "html-react-parser": "^5.1.1"
-- "react": "^18.2.0"
-- "react-dom": "^18.2.0"
-- "react-hook-form": "^7.49.3"
-- "react-redux": "^9.1.0"
-- "react-router-dom": "^6.21.3"
+- "@reduxjs/toolkit": "^2.2.5",
+- "@tinymce/tinymce-react": "^5.0.1",
+- "appwrite": "^14.0.1",
+- "html-react-parser": "^5.1.10",
+- "react": "^18.2.0",
+- "react-dom": "^18.2.0",
+- "react-hook-form": "^7.51.4",
+- "react-redux": "^9.1.2",
+- "react-router-dom": "^6.23.1"
 
 ## 🚦 Running the Project
 1. Clone the Repository: https://github.com/Kunjshah20/Chai-Blog-Hub
