@@ -28,7 +28,7 @@ https://appwriteblog-chi.vercel.app/ "ProsePond"), providing a convenient platfo
 - "react-router-dom": "^6.23.1"
 
 ## 🚦 Running the Project
-1. Clone the Repository: https://github.com/Kunjshah20/Chai-Blog-Hub
+1. Clone the Repository: https://github.com/Ishan-Mittal69/appwriteblog
 2. Install Dependencies: npm install
 3. Run npm run dev to get the project started.
 
