@@ -75,7 +75,7 @@ function Signup() {
                         <Input
                             label="Password :"
                             placeholder="Enter your password"
-                            type="new-password"
+                            type="password"
                             {...register("password" , { required:true })}
                         />
                         {/* Display loader if loading state is true */}
