@@ -14,8 +14,8 @@ import PostCard from "./PostCard";
 import Protected  from "./AuthLayout";
 import Loader from "./loaders/Loader";
 import SkeletonLoader from "./loaders/SkeletonLoader";
-
+import EmailVerification from "./Emailverification";
 
 export {
-    Header, Footer, Container, Logo, LogoutBtn, Button, Select, Input, RTE, Signup, Login, PostForm , PostCard, Protected, Loader, SkeletonLoader
+    Header, Footer, Container, Logo, LogoutBtn, Button, Select, Input, RTE, Signup, Login, PostForm , PostCard, Protected, Loader, SkeletonLoader, EmailVerification
 }

@@ -5,7 +5,7 @@ import './index.css'
 import { Provider } from 'react-redux'
 import  store  from "./store/store.js";
 import { Route,RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom'
-import { Protected } from "./components/index.js";
+import { EmailVerification, Protected } from "./components/index.js";
 import Login from "./Pages/Login.jsx";
 import SignupPage from "./Pages/Signup.jsx";
 
@@ -15,6 +15,7 @@ import Post from "./Pages/Postpage.jsx";
 
 import AllPosts from "./Pages/AllPost.jsx";
 import AddPost from './Pages/AddPost.jsx'
+
 
 const router = createBrowserRouter(
 
@@ -53,6 +54,8 @@ const router = createBrowserRouter(
     )}  />
 
     <Route path='/post/:slug' element={<Post/>} />
+
+    <Route path='/verify' element={<EmailVerification />} />
 
   </Route>
 

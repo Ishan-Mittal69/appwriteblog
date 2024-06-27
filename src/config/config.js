@@ -4,6 +4,7 @@ const config={
     appwritedatabaseid: String(import.meta.env.VITE_APPWRITE_DATABASE_ID),
     appwritecollectionid: String(import.meta.env.VITE_APPWRITE_COLLECTION_ID),
     appwritebucketid: String(import.meta.env.VITE_APPWRITE_BUCKET_ID),
-    tinyMCE_apiKey : String(import.meta.env.VITE_API_KEY)
+    tinyMCE_apiKey : String(import.meta.env.VITE_API_KEY),
+    appwriteredirecturl : String(import.meta.env.VITE_APPWRITE_REDIRECTURL)
 }
 export default config

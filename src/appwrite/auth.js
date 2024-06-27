@@ -15,27 +15,49 @@ export class AuthService{
 
     async creatAccount({email, password, name}){
         try{
-            const userAccount = await this.account.create(ID.unique(),email, password, name);
+            const userAccount = await this.account.create(ID.unique(), email, password, name);
             if(userAccount){
-                // Check if email is defined before destructuring
-                if (userAccount.email) {
-                    // Proceed with email destructuring
-                    const { email } = userAccount;
-                    // Continue with the rest of the function
-                    return this.login({ email, password });
-                }
-            }
-            else{
+                // Create a session immediately after account creation
+                await this.account.createEmailPasswordSession(email, password);
+                await this.sendVerificationEmail();
+                this.account.deleteSessions();
                 return userAccount;
             }
         } catch (error) {
+            console.error("Account creation error:", error);
             throw error;
+        }
+    }
+
+    async sendVerificationEmail() {
+        try {
+            const result = await this.account.createVerification(config.appwriteredirecturl);
+            console.log("Verification email sent:", result);
+            return true;
+        } catch (error) {
+            console.error("Error sending verification email:", error);
+            throw error;
+        }
+    }
+
+    async verification(userId, secret) {
+        try {
+            await this.account.updateVerification(userId, secret);
+            return true;
+        } catch (error) {
+            console.error("Error verifying email:", error);
+            return false;
         }
     }
 
     async login ({email, password}){
         try {
-            return await this.account.createEmailPasswordSession(email, password);
+            const session = await this.account.createEmailPasswordSession(email, password);
+            const user = await this.account.get();
+            if (!user.emailVerification) {
+                throw new Error("Email not verified. Please check your email for verification link.");
+            }
+            return session;
         } catch (error) {
             throw error;   
         }

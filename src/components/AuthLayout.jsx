@@ -10,10 +10,10 @@ export default function Protected({children , authentication= true}) {
 
     useEffect(()=>{
         if (authentication && authStatus !== authentication) {
-            navigate("/login")
+            navigate("/login") //logout hai aur /all-posts ya aesa aur kuch access karega toh 
         }
         else if(!authentication && authStatus !== authentication){
-            navigate("/")
+            navigate("/") // login hai or /login ya /signup access karega toh 
         }
         setLoader(false)
 

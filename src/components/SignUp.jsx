@@ -6,6 +6,13 @@ import { useDispatch } from 'react-redux';
 import authService  from '../appwrite/auth';
 import { useForm } from 'react-hook-form';
 
+import validator from 'validator';
+
+const matchPattern = (value) => {
+    const regexPattern = /^(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:\\[\x01-\x09\x0b\x0c\x0e-\x7f]|\\x[\x01-\x09\x0b\x0c\x0e-\x7f])+")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,63}|\[(?:(?:[01]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\.){3}(?:[01]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\])$/;
+    return regexPattern.test(value) && validator.isEmail(value) || "Email address must be a valid address";
+};
+
 function Signup() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -14,23 +21,26 @@ function Signup() {
     const [loading, setLoading] = useState(false); // State variable for loading state
 
     const SignUpUser = async(data) => {
-        console.log(data);
         setError("");
-        setLoading(true); // Set loading state to true when signup process starts
+        setLoading(true);
         try {
-            const session = await authService.creatAccount(data);
-
-            if(session){
-               const user = await authService.getCurrentUser();
-               if(user){
-                    dispatch(login(user));
-                    navigate("/");
-               }
+            // Create account
+            const user = await authService.creatAccount(data);
+            if (user) {
+                // Send verification email
+                await authService.sendVerificationEmail();
+                
+                // Inform user about verification email
+                alert("Account created successfully. Please check your email for verification link.");
+                
+                setLoading(false);
+                navigate("/login");
             }
         } catch (error) {
-            setError(error.message);
+            console.error("Signup error:", error);
+            setError(error.message || "An error occurred during signup");
         } finally {
-            setLoading(false); // Set loading state to false when signup process completes
+            setLoading(false);
         }
     };
 
@@ -67,15 +77,14 @@ function Signup() {
                             {...register("email" , {
                                 required:true,
                                 validate: {
-                                    matchPattern: (value) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) ||
-                                    "Email address must be a valid address",
+                                    matchPattern: matchPattern,
                                 }   
                             })}
                         />
                         <Input
                             label="Password :"
                             placeholder="Enter your password"
-                            type="new-password"
+                            type="password"
                             {...register("password" , { required:true })}
                         />
                         {/* Display loader if loading state is true */}
