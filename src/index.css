@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@keyframes swivel {
+    0% {
+      transform: rotate3d(1, 1, 1, 0deg);
+    }
+    50% {
+      transform: rotate3d(1, 1, 1, 180deg);
+    }
+    100% {
+      transform: rotate3d(1, 1, 1, 360deg);
+    }
+  }
+  
+  .animate-swivel {
+    animation: swivel 2s ease-in-out infinite;
+  }

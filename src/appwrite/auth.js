@@ -50,16 +50,23 @@ export class AuthService{
         }
     }
 
-    async login ({email, password}){
+    async login({ email, password, provider }) {
         try {
-            const session = await this.account.createEmailPasswordSession(email, password);
-            const user = await this.account.get();
-            if (!user.emailVerification) {
-                throw new Error("Email not verified. Please check your email for verification link.");
+            if (provider) {
+                // OAuth login
+                 // Create this route in your app
+                return this.account.createOAuth2Session(provider,config.successloginurl, config.failureloginurl);
+            } else {
+                // Email/password login (keep this as is)
+                const session = await this.account.createEmailPasswordSession(email, password);
+                const user = await this.account.get();
+                if (!user.emailVerification) {
+                    throw new Error("Email not verified. Please check your email for verification link.");
+                }
+                return session;
             }
-            return session;
         } catch (error) {
-            throw error;   
+            throw error;
         }
     }
 
@@ -86,4 +93,3 @@ export class AuthService{
 const authService = new AuthService() 
 
 export default authService
-

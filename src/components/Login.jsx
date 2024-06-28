@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { login as authLogin } from "../store/authSlice";
-import { Button, Input, Logo, Loader } from "./index"; // Assuming Loader component exists
+import { Button, Input, Logo, Loader } from "./index";
 import { useDispatch } from 'react-redux';
 import authService from '../appwrite/auth';
 import { useForm } from 'react-hook-form';
@@ -29,6 +29,18 @@ function Login() {
             setError(error.message);
         } finally {
             setLoading(false); // Set loading state to false when login process completes
+        }
+    };
+
+    const handleOAuthLogin = async (provider) => {
+        setError("");
+        setLoading(true);
+        try {
+            await authService.login({ provider });
+            // The user will be redirected to the OAuth provider here
+        } catch (error) {
+            setError(error.message);
+            setLoading(false);
         }
     };
 
@@ -70,9 +82,31 @@ function Login() {
                         </Button>
                     </div>
                 </form>
+                <div className="mt-6">
+                    <div className="relative">
+                        <div className="absolute inset-0 flex items-center">
+                            <div className="w-full border-t border-gray-300"></div>
+                        </div>
+                        <div className="relative flex justify-center text-sm">
+                            <span className="px-2 bg-gray-100 text-gray-500 dark:bg-gray-900">Or continue with</span>
+                        </div>
+                    </div>
+                    <div className="mt-6 ">
+                        <Button
+                            type="button"
+                            className="w-full"
+                            onClick={() => handleOAuthLogin('google')}
+                            disabled={loading}
+                        >
+                            <img src='/google-logo.png' alt="Google" className="w-4 h-4 mr-2 inline-block" />
+                            Google
+                        </Button>
+                    </div>
+                </div>
             </div>
         </div>
     );
 }
 
 export default Login;
+

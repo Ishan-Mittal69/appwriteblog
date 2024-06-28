@@ -5,7 +5,7 @@ import './index.css'
 import { Provider } from 'react-redux'
 import  store  from "./store/store.js";
 import { Route,RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom'
-import { EmailVerification, Protected } from "./components/index.js";
+import { EmailVerification, Protected, AuthCallback } from "./components/index.js";
 import Login from "./Pages/Login.jsx";
 import SignupPage from "./Pages/Signup.jsx";
 
@@ -57,6 +57,7 @@ const router = createBrowserRouter(
 
     <Route path='/verify' element={<EmailVerification />} />
 
+    <Route path='/auth-callback' element={<AuthCallback />} />
   </Route>
 
 ))
