@@ -55,7 +55,7 @@ export class AuthService{
             if (provider) {
                 // OAuth login
                  // Create this route in your app
-                return this.account.createOAuth2Session(provider,"https://*.vercel.app/all-posts", "https://*.vercel.app/login");
+                return this.account.createOAuth2Session(provider,"https://appwriteblog-chi.vercel.app/all-posts", "https://appwriteblog-chi.vercel.app/login");
                 
             } else {
                 // Email/password login (keep this as is)
