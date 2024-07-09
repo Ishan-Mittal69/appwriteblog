@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button, Input, Loader, RTE, Select } from "../index";
 import appwriteService from "../../appwrite/conf";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import config from "../../config/config";
@@ -89,6 +89,7 @@ export default function PostForm({ post }) {
     const generateBlogContent = async () => {
         const title = getValues("title");
         const image = getValues("image")[0];
+        const userPrompt = getValues("prompt");
 
         if (!title) {
             alert("Please enter a title before generating the blog content.");
@@ -117,7 +118,12 @@ export default function PostForm({ post }) {
             const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
 
             // Prepare the prompt
-            const prompt = `Write a blog post with the theme of image and on the topic: "${title}" in less then 65535 characters. The content should be informative, engaging, and well-structured with no styling i.e bold , italic , etc applied`;
+            let prompt = `Write a blog post with the theme of image and on the topic: "${title}" in less than 65535 characters. The content should be informative, engaging, and well-structured with no styling i.e bold, italic, etc applied.`;
+            
+            // Add user's custom prompt if provided
+            if (userPrompt) {
+                prompt += ` Additional instructions: ${userPrompt}`;
+            }
 
             // Generate content
             let result;
@@ -155,7 +161,7 @@ export default function PostForm({ post }) {
                             message: "Title must not exceed 35 characters" 
                         } 
                     })}/>
-                     {errors.title && (
+                {errors.title && (
                     <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>
                 )}
                 
@@ -175,6 +181,22 @@ export default function PostForm({ post }) {
                     accept="image/png, image/jpg, image/jpeg, image/gif"
                     {...register('image', { required: !post })}
                 />
+                <Input
+                    label="Optional Prompt :"
+                    placeholder="Enter additional instructions for AI content generation (optional)"
+                    className="mb-4"
+                    {...register("prompt")}
+                />
+                <div className="mb-4">
+                    <Link 
+                        className="text-blue-600 hover:underline" 
+                        to="https://promptplace.vercel.app/" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                    >
+                        Need better prompts? Try my another project PromptPlace - A place for Prompts.
+                    </Link>
+                </div>
                 <Button 
                     type="button" 
                     onClick={generateBlogContent} 
