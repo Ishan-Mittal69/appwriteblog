@@ -118,7 +118,7 @@ export default function PostForm({ post }) {
             const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
 
             // Prepare the prompt
-            let prompt = `Write a blog post with the theme of image and on the topic: "${title}" in less than 65535 characters. The content should be informative, engaging, and well-structured with no styling i.e bold, italic, etc applied.`;
+            let prompt = `Write a blog post with the theme of image and on the topic: "${title}" in less than 65535 characters. The content should be informative, engaging, and well-structured with no styling i.e bold, italic, etc applied. Give more impotance to topic`;
             
             // Add user's custom prompt if provided
             if (userPrompt) {
