@@ -55,10 +55,11 @@ export class AuthService{
             if (provider) {
                 // OAuth login
                  // Create this route in your app
+//                 return this.account.createOAuth2Session(provider,"http://localhost:5173/all-posts", "http://localhost:5173/login");
                 return this.account.createOAuth2Session(provider,"https://appwriteblog-chi.vercel.app/all-posts", "https://appwriteblog-chi.vercel.app/login");
                 
             } else {
-                // Email/password login (keep this as is)
+                // Email/password login
                 const session = await this.account.createEmailPasswordSession(email, password);
                 const user = await this.account.get();
                 if (!user.emailVerification) {

@@ -9,6 +9,5 @@ const config={
     successloginurl : String(import.meta.env.VITE_APPWRITE_SUCCESS_URL),
     failureloginurl : String(import.meta.env.VITE_APPWRITE_FAILURE_URL), 
     geminiapikey: String(import.meta.env.VITE_APP_GEMINI_API_KEY)
-
 }
 export default config

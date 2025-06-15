@@ -44,14 +44,19 @@ function RTE({name, control, label, defaultValue=""}) {
                     ],
                     toolbar:
                     "undo redo | blocks | image | bold italic forecolor | alignleft aligncenter bold italic forecolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent |removeformat | help",
-                    content_style: "body { font-family:Helvetica,Arial,sans-serif; font-size:14px;  } "
+                    content_style: "body { font-family:Helvetica,Arial,sans-serif; font-size:14px;  } ",
+                    entity_encoding: 'raw',
+                    encoding: 'xml',
+                    valid_elements: '*[*]',
+                    extended_valid_elements: '*[*]',
+                    allow_unsafe_link_target: true,
+                    convert_urls: false
                 }}
                 onEditorChange={onChange}
                 />)}
             
             />
         </div>
-
         
         
     );

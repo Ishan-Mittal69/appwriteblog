@@ -8,17 +8,14 @@ import { Route,RouterProvider, createBrowserRouter, createRoutesFromElements } f
 import { EmailVerification, Protected, AuthCallback } from "./components/index.js";
 import Login from "./Pages/Login.jsx";
 import SignupPage from "./Pages/Signup.jsx";
-
 import EditPost from "./Pages/EditPost";
 import Home from './Pages/Home.jsx'
 import Post from "./Pages/Postpage.jsx";
-
 import AllPosts from "./Pages/AllPost.jsx";
 import AddPost from './Pages/AddPost.jsx'
-
+import UserPostsPage from './Pages/UserPostsPage.jsx'
 
 const router = createBrowserRouter(
-
   createRoutesFromElements(
   <Route path='/' element={<App/>} >
     <Route path='/' element={<Home/>}  />
@@ -36,8 +33,12 @@ const router = createBrowserRouter(
     )}  />
 
     <Route path='/all-posts' element={(
-      <Protected >
         <AllPosts/>
+    )}  />
+    
+    <Route path='/my-posts' element={(
+      <Protected>
+        <UserPostsPage />
       </Protected>
     )}  />
     
@@ -53,13 +54,22 @@ const router = createBrowserRouter(
       </Protected>
     )}  />
 
-    <Route path='/post/:slug' element={<Post/>} />
+    <Route path='/post/:slug' element={
+      <Protected>
+        <Post/>
+      </Protected>
+    } />
+
+    <Route path='/user/:userId' element={
+      <Protected>
+        <UserPostsPage />
+      </Protected>
+    } />
 
     <Route path='/verify' element={<EmailVerification />} />
 
     <Route path='/auth-callback' element={<AuthCallback />} />
   </Route>
-
 ))
 
 ReactDOM.createRoot(document.getElementById('root')).render(
