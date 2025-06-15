@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ThemeBtn, LogoutBtn } from '../index';
+import { LogoutBtn } from '../index';
 
 function UserMenu({ 
     userData, 
@@ -60,7 +60,6 @@ function UserMenu({
                 onClick={() => handleNavigation('/')}
             >Home</button>
             <div className="border-t border-gray-200 dark:border-gray-700 my-2"></div>
-            <div className="px-4 py-2"><ThemeBtn /></div>
             <div className="px-4 py-2"><LogoutBtn /></div>
         </div>
     );

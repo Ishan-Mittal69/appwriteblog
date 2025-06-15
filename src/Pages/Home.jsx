@@ -64,19 +64,11 @@ function Home() {
                         transition={{ delay: 0.7, duration: 0.5 }}
                         className="w-full text-center"
                     >
-                        {authStatus ? (
-                            <Link to='/all-posts'>
-                                <Button className="text-lg px-8 py-3 rounded-xl shadow-lg bg-gradient-to-r from-teal-500 to-blue-500 hover:from-blue-500 hover:to-teal-500 transition-all duration-300">
-                                    Deep dive!
-                                </Button>
-                            </Link>
-                        ) : (
-                            <Link to='/login'>
-                                <Button className="text-lg px-8 py-3 rounded-xl shadow-lg bg-gradient-to-r from-teal-500 to-blue-500 hover:from-blue-500 hover:to-teal-500 transition-all duration-300">
-                                    Get Started
-                                </Button>
-                            </Link>
-                        )}
+                        <Link to='/all-posts'>
+                            <Button className="text-lg px-8 py-3 rounded-xl shadow-lg bg-gradient-to-r from-teal-500 to-blue-500 hover:from-blue-500 hover:to-teal-500 transition-all duration-300">
+                                Deep dive!
+                            </Button>
+                        </Link>
                     </motion.div>
                 </div>
             </Container>

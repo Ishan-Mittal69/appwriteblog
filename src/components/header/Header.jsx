@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Logo, UserMenu } from "../index";
+import { Container, Logo, UserMenu, ThemeBtn } from "../index";
 import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -11,8 +11,7 @@ function Header() {
     const navigate = useNavigate()
     const [scrolled, setScrolled] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-    const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
+    const [userMenuOpen, setUserMenuOpen] = useState(false);
     const location = useLocation();
     const defaultAvatar = 'https://ui-avatars.com/api/?name=User&background=random';
     const userAvatar = userData?.prefs?.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(userData?.name || 'User')}`;
@@ -65,72 +64,40 @@ function Header() {
         <header className={headerClass}>
             <Container>
                 <nav className="flex items-center h-20 sm:h-24 px-2 sm:px-0">
+                    {/* Logo */}
                     <Link to='/' className="flex items-center space-x-3 mr-4 sm:mr-10 flex-shrink-0">
                         <Logo width='60px' />
                         <span className="text-xl sm:text-2xl font-extrabold text-gray-800 dark:text-gray-100 tracking-widest select-none" style={{ fontFamily: 'cursive' }}>ProsePond</span>
                     </Link>
 
                     {/* Search Bar - Desktop */}
-                    <div className="hidden sm:block flex-1 max-w-xl mx-4">
+                    <div className="hidden sm:block flex-1 max-w-xl mx-8">
                         <SearchBar />
                     </div>
 
-                    {/* Avatar for mobile */}
-                    {authStatus ? (
-                        <div className="sm:hidden ml-auto relative">
-                            <button
-                                id="mobile-avatar-btn"
-                                className="p-1 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                onClick={() => setMobileMenuOpen(v => !v)}
-                                aria-label="Open user menu"
-                            >
-                                <img
-                                    src={userAvatar || defaultAvatar}
-                                    alt={userData?.name || 'User'}
-                                    className="w-10 h-10 rounded-full border border-gray-200 dark:border-gray-700 object-cover"
-                                />
-                            </button>
-                            <UserMenu 
-                                userData={userData}
-                                isOpen={mobileMenuOpen}
-                                onClose={() => setMobileMenuOpen(false)}
-                                position="right-0"
-                                className="sm:hidden"
-                                menuId="mobile-avatar-btn"
-                            />
-                        </div>
-                    ) : null}
-                    
-                    <button
-                        className="sm:hidden ml-2 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-                        onClick={() => setMenuOpen(!menuOpen)}
-                        aria-label="Toggle navigation menu"
-                    >
-                        <svg className="w-7 h-7 text-gray-700 dark:text-gray-200" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                    </button>
-
-                    {/* Desktop nav */}
-                    <ul className="hidden sm:flex ml-auto items-center">
+                    {/* Desktop Navigation */}
+                    <div className="hidden sm:flex items-center space-x-8">
                         {navItems.map((item) =>
-                            item.active ? (
-                                <li key={item.name}>
-                                    <button
-                                        onClick={() => navigate(item.slug)}
-                                        className="px-4 py-2 text-base font-semibold text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                                    >
-                                        {item.name}
-                                    </button>
-                                </li>
+                            item.active && item.name !== 'Home' ? (
+                                <button
+                                    key={item.name}
+                                    onClick={() => navigate(item.slug)}
+                                    className="text-base font-semibold text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                                >
+                                    {item.name}
+                                </button>
                             ) : null
                         )}
-                        {/* Avatar for desktop */}
+                    </div>
+
+                    {/* Right side items */}
+                    <div className="ml-auto flex items-center space-x-4">
+                        {/* Avatar - Only visible when logged in */}
                         {authStatus && (
-                            <li className="px-4 ml-2 relative">
+                            <div className="relative">
                                 <button
-                                    id="desktop-avatar-btn"
-                                    onClick={() => setDesktopMenuOpen(v => !v)}
+                                    id="user-menu-btn"
+                                    onClick={() => setUserMenuOpen(v => !v)}
                                     className="focus:outline-none"
                                     aria-label="Open user menu"
                                 >
@@ -142,39 +109,117 @@ function Header() {
                                 </button>
                                 <UserMenu 
                                     userData={userData}
-                                    isOpen={desktopMenuOpen}
-                                    onClose={() => setDesktopMenuOpen(false)}
+                                    isOpen={userMenuOpen}
+                                    onClose={() => setUserMenuOpen(false)}
                                     position="right-0"
-                                    className="hidden sm:block"
-                                    menuId="desktop-avatar-btn"
+                                    menuId="user-menu-btn"
                                 />
-                            </li>
-                        )}
-                    </ul>
-
-                    {/* Mobile nav */}
-                    {menuOpen && (
-                        <div className="absolute top-full left-0 w-full bg-white/95 dark:bg-black/95 shadow-lg rounded-b-xl flex flex-col items-center py-4 sm:hidden animate-fade-in z-50">
-                            {/* Search Bar - Mobile */}
-                            <div className="w-full px-4 mb-4">
-                                <SearchBar />
                             </div>
-                            <ul className="flex flex-col w-full items-center space-y-2">
-                                {navItems.map((item) =>
-                                    item.active ? (
-                                        <li key={item.name} className="w-full text-center">
-                                            <button
-                                                onClick={() => { setMenuOpen(false); navigate(item.slug); }}
-                                                className="w-full px-4 py-3 text-base font-semibold text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                                            >
-                                                {item.name}
-                                            </button>
-                                        </li>
-                                    ) : null
-                                )}
-                            </ul>
+                        )}
+                        
+                        {/* Hamburger menu button */}
+                        <div className="relative">
+                            <button
+                                className="p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                onClick={() => setMenuOpen(!menuOpen)}
+                                aria-label="Toggle navigation menu"
+                            >
+                                <svg className="w-7 h-7 text-gray-700 dark:text-gray-200" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                                </svg>
+                            </button>
+
+                            {/* Hamburger Menu */}
+                            {menuOpen && (
+                                <>
+                                    {/* Mobile Dropdown Menu - Redesigned */}
+                                    <div className="fixed left-0 right-0 top-20 bg-white/95 dark:bg-black/95 shadow-2xl rounded-b-2xl z-[100] px-4 py-6 flex flex-col gap-4 sm:hidden animate-fade-in">
+                                        {/* Search Bar - Mobile */}
+                                        <div className="w-full mb-4">
+                                            <SearchBar />
+                                        </div>
+                                        <ul className="flex flex-col w-full gap-2">
+                                            <li>
+                                                <button
+                                                    onClick={() => { setMenuOpen(false); navigate('/'); }}
+                                                    className="w-full py-3 text-lg font-semibold text-gray-800 dark:text-gray-100 rounded hover:bg-blue-50 dark:hover:bg-gray-800 transition-colors"
+                                                >
+                                                    Home
+                                                </button>
+                                            </li>
+                                            {!authStatus && (
+                                                <>
+                                                    <li>
+                                                        <button
+                                                            onClick={() => { setMenuOpen(false); navigate('/login'); }}
+                                                            className="w-full py-3 text-lg font-semibold text-gray-800 dark:text-gray-100 rounded hover:bg-blue-50 dark:hover:bg-gray-800 transition-colors"
+                                                        >
+                                                            Login
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button
+                                                            onClick={() => { setMenuOpen(false); navigate('/signup'); }}
+                                                            className="w-full py-3 text-lg font-semibold text-gray-800 dark:text-gray-100 rounded hover:bg-blue-50 dark:hover:bg-gray-800 transition-colors"
+                                                        >
+                                                            Signup
+                                                        </button>
+                                                    </li>
+                                                </>
+                                            )}
+                                            <li className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-2">
+                                                <div className="flex justify-center">
+                                                    <ThemeBtn />
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    {/* Desktop Dropdown Menu */}
+                                    <div className="absolute top-full right-0 w-64 bg-white/95 dark:bg-black/95 shadow-lg rounded-b-xl flex-col items-center py-4 animate-fade-in z-50 hidden sm:flex">
+                                        {/* Search Bar - Desktop (hidden) */}
+                                        <div className="w-full px-4 mb-6 hidden">
+                                            <SearchBar />
+                                        </div>
+                                        <ul className="flex flex-col w-full items-center space-y-2">
+                                            <li className="w-full text-center">
+                                                <button
+                                                    onClick={() => { setMenuOpen(false); navigate('/'); }}
+                                                    className="w-full px-4 py-3 text-base font-semibold text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                                                >
+                                                    Home
+                                                </button>
+                                            </li>
+                                            {!authStatus && (
+                                                <>
+                                                    <li className="w-full text-center">
+                                                        <button
+                                                            onClick={() => { setMenuOpen(false); navigate('/login'); }}
+                                                            className="w-full px-4 py-3 text-base font-semibold text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                                                        >
+                                                            Login
+                                                        </button>
+                                                    </li>
+                                                    <li className="w-full text-center">
+                                                        <button
+                                                            onClick={() => { setMenuOpen(false); navigate('/signup'); }}
+                                                            className="w-full px-4 py-3 text-base font-semibold text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                                                        >
+                                                            Signup
+                                                        </button>
+                                                    </li>
+                                                </>
+                                            )}
+                                            <li className="w-full text-center border-t border-gray-200 dark:border-gray-700 mt-2 pt-4">
+                                                <div className="flex justify-center">
+                                                    <ThemeBtn />
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </>
+                            )}
                         </div>
-                    )}
+                    </div>
                 </nav>
             </Container>
         </header>
