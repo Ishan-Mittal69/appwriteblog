@@ -1,12 +1,12 @@
 # ✨ ProsePond
-ProsePond is a dynamic web application crafted for users to articulate their thoughts and ideas through published articles. It seamlessly incorporates user authentication, a robust rich text editor, and Appwrite as the backend, ensuring a smooth and secure experience for writers and readers.
+ProsePond is a dynamic AI powered web application crafted for users to articulate their thoughts and ideas through published articles. It seamlessly incorporates secure user authentication and verification, a robust rich text editor, and Appwrite as the backend, ensuring a smooth and secure experience for writers and readers.
 
 ## 🚀 Deployment
 ProsePond is accessible on Link [Visit website](
 https://appwriteblog-chi.vercel.app/ "ProsePond"), providing a convenient platform for users to experience the application.
 
 ## 🚀 Features
-- User Authentication: Guarantees secure signup and login using email credentials.
+- User Authentication: Guarantees secure signup and login using email credentials with user verification through magic link sent on email.Also added Google Oauth 2.0 for lightning fast login .⚡⚡
 - Article Management: Streamlines articles' creation, editing, and deletion.
 - Rich Text Editor: Empowered by TinyMCE, the editor presents a range of formatting options, including font styles, colors, headings, indentations, images, tables, special characters, and numbering.
 - Browse Articles: Users can peruse a dedicated section to read and engage with articles from other contributors.
@@ -23,6 +23,7 @@ https://appwriteblog-chi.vercel.app/ "ProsePond"), providing a convenient platfo
 - Google Gemini AI: For AI-powered content generation
 
 ## 📦 Dependencies
+- "@google/generative-ai": "^0.14.1"
 - "@reduxjs/toolkit": "^2.2.5",
 - "@tinymce/tinymce-react": "^5.0.1",
 - "appwrite": "^14.0.1",
@@ -34,7 +35,8 @@ https://appwriteblog-chi.vercel.app/ "ProsePond"), providing a convenient platfo
 - "react-router-dom": "^6.23.1",
 - "@langchain/google-genai": "^0.0.14",
 - "dompurify": "^3.0.9"
-
+- "validator": "^13.12.0"
+  
 ## 🚦 Running the Project
 1. Clone the Repository: https://github.com/Ishan-Mittal69/appwriteblog
 2. Install Dependencies: `npm install`
