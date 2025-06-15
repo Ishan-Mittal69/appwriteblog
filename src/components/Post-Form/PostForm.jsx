@@ -7,9 +7,7 @@ import { useSelector } from "react-redux";
 import config from "../../config/config";
 import DOMPurify from 'dompurify';
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
-import { PromptTemplate } from "@langchain/core/prompts";
-import { StringOutputParser } from "@langchain/core/output_parsers";
-
+import { HumanMessage, SystemMessage } from "@langchain/core/messages";
 
 export default function PostForm({ post }) {
     const { register, handleSubmit, watch, setValue, control, getValues, formState: { errors } } = useForm({
@@ -105,31 +103,14 @@ export default function PostForm({ post }) {
 
         setGenerating(true);
         try {
-            // Convert image to correct format if it exists
-            let imageData = null;
-            if (image) {
-                const imageBase64 = await new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.onload = () => resolve(reader.result.split(',')[1]);
-                    reader.onerror = reject;
-                    reader.readAsDataURL(image);
-                });
-                imageData = {
-                    inlineData: {
-                        data: imageBase64,
-                        mimeType: image.type
-                    }
-                };
-            }
-
             const model = new ChatGoogleGenerativeAI({
                 model: "gemini-2.0-flash",
                 apiKey: config.geminiapikey,
-                temperature: 0.5,
+                temperature: 0.7,
             });
 
-            // Create a prompt template with safety instructions
-            const promptTemplate = PromptTemplate.fromTemplate(`
+            // Create the system message
+            const systemMessage = new SystemMessage(`
                 You are a professional blog writer. Your task is to write a blog post based on the given title and any additional instructions.
 
                 SAFETY INSTRUCTIONS:
@@ -143,7 +124,6 @@ export default function PostForm({ post }) {
                 - Start directly with the HTML content
 
                 BLOG REQUIREMENTS:
-                - Write a blog post about: {title}
                 - Format the response in HTML with the following structure:
                 - Use <h1> for the main title
                 - Use <h2> for section headings
@@ -157,28 +137,45 @@ export default function PostForm({ post }) {
                 - Do not include any styling attributes or classes
                 - Do not include any image tags
                 - Keep the HTML clean and semantic
+            `);
 
-                {additionalInstructions}
-        `);
-
-            // Format the prompt with the title and any additional instructions
-            const formattedPrompt = await promptTemplate.format({
-                title: title,
-                additionalInstructions: userPrompt ? `Additional instructions: ${userPrompt}` : ""
-            });
-
-            // Create a chain with the model and output parser
-            const chain = model.pipe(new StringOutputParser());
+            // Create the human message
+            const humanMessage = new HumanMessage(
+                `Write a blog post about: ${title}\n\n${userPrompt ? `Additional instructions: ${userPrompt}` : ""}`
+            );
 
             // Generate the content
             let response;
-            if (image && imageData) {
-                response = await chain.invoke([formattedPrompt, imageData]);
+            if (image) {
+                const imageBase64 = await new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(reader.result.split(',')[1]);
+                    reader.onerror = reject;
+                    reader.readAsDataURL(image);
+                });
+
+                const imageMessage = new HumanMessage({
+                    content: [
+                        {
+                            type: "text",
+                            text: `Write a blog post about: ${title}\n\n${userPrompt ? `Additional instructions: ${userPrompt}` : ""}`
+                        },
+                        {
+                            type: "image_url",
+                            image_url: {
+                                url: `data:${image.type};base64,${imageBase64}`
+                            }
+                        }
+                    ]
+                });
+
+                response = await model.invoke([systemMessage, imageMessage]);
             } else {
-                response = await chain.invoke(formattedPrompt);
+                response = await model.invoke([systemMessage, humanMessage]);
             }
+
             // Set the generated content in the form
-            setValue("content", DOMPurify.sanitize(response));
+            setValue("content", DOMPurify.sanitize(response.content));
         } catch (error) {
             console.error('Error generating blog content:', error);
             alert("An error occurred while generating the blog content. Please try again.");
@@ -241,7 +238,7 @@ export default function PostForm({ post }) {
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">AI Generation Prompt (Optional)</label>
+                                <label className="block text-sm text-gray-700 dark:text-gray-200 mb-2">AI Generation Prompt (Optional)</label>
                                 <Input
                                     placeholder="Add specific instructions for AI content generation"
                                     className="mb-2 dark:bg-gray-700/50 dark:border-gray-600 dark:placeholder-gray-400"
