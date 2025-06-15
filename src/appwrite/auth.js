@@ -57,7 +57,7 @@ export class AuthService{
                  // Create this route in your app
                 return this.account.createOAuth2Session(provider,"http://localhost:5173/all-posts", "http://localhost:5173/login");
             } else {
-                // Email/password login (keep this as is)
+                // Email/password login
                 const session = await this.account.createEmailPasswordSession(email, password);
                 const user = await this.account.get();
                 if (!user.emailVerification) {

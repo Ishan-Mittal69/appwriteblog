@@ -16,6 +16,12 @@ import Loader from "./loaders/Loader";
 import SkeletonLoader from "./loaders/SkeletonLoader";
 import EmailVerification from "./Emailverification";
 import AuthCallback from "./AuthCallBack";
+import UserMenu from "./header/UserMenu";
+import ThemeBtn from "./ThemeBtn";
+import SearchBar from "./SearchBar/SearchBar";
+
 export {
-    Header, Footer, Container, Logo, LogoutBtn, Button, Select, Input, RTE, Signup, Login, PostForm , PostCard, Protected, Loader, SkeletonLoader, EmailVerification, AuthCallback
+    Header, Footer, Container, Logo, LogoutBtn, Button, Select, Input, RTE, Signup, Login, PostForm, 
+    PostCard, Protected, Loader, SkeletonLoader, EmailVerification, AuthCallback, UserMenu, ThemeBtn,
+    SearchBar
 }

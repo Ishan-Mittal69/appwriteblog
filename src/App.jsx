@@ -47,14 +47,12 @@ function App() {
         <InitialLoader />
       ) : (
         <ThemeContextProvider value={{ themeMode, lightTheme, darkTheme }}>
-          <div className="min-h-screen flex flex-wrap content-between bg-slate-200">
-            <div className="w-full block">
-              <Header />
-              <main className="bg-slate-50 h-4/5 dark:bg-customBlack">
-                <Outlet />
-              </main>
-              <Footer />
-            </div>
+          <div className="min-h-screen flex flex-col bg-slate-200 dark:bg-customBlack">
+            <Header />
+            <main className="flex-1 bg-slate-50 dark:bg-customBlack">
+              <Outlet />
+            </main>
+            <Footer />
           </div>
         </ThemeContextProvider>
       )}
